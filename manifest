@@ -1,4 +1,4 @@
-#copyOfNGCHM_BasicBuilder
+#NGCHM_BasicBuilder
 #Tue Aug 13 14:42:16 CDT 2019
 JVMLevel=
 LSID=urn\:lsid\:mdanderson.org\:genepatternmodules\:3\:1
@@ -10,7 +10,7 @@ description=Build NGCHM
 fileFormat=Dataset
 job.docker.image=junmahouston/genepattern_ngchm\:v0.1
 language=Java
-name=copyOfNGCHM_BasicBuilder
+name=NGCHM_BasicBuilder
 os=any
 p10_MODE=
 p10_TYPE=TEXT
