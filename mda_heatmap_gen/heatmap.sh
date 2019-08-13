@@ -39,6 +39,7 @@ rowConfigJson='"row_configuration": {'
 colConfigJson='"col_configuration": {'
 
 ctr=0
+heatmapName="testRun"
 for i in "$@"; do
 	if [ $ctr -gt 1 ]
 	then
@@ -47,6 +48,10 @@ for i in "$@"; do
 		then
 			#Parse pipe-delimited parameter parameter
 			parmJson=$parmJson' "'$(cut -d'|' -f1 <<< $i)'":"'$(cut -d'|' -f2 <<< $i)'",'
+			if [ $currParm = "chm_name" ]
+			then
+				heatmapName=$(cut -d'|' -f2 <<< $i)
+			fi
 	  	fi
 		if [ $currParm = "row_configuration" ]
 		then
@@ -141,8 +146,11 @@ then
   fi
   exit $rc;
 fi
-
 #call java program to generate NGCHM viewer files.
 java -jar $tooldir/GalaxyMapGen.jar "$parmJson"
 #clean up tempdir
 rm -rf $tdir
+
+find .  -name *.png -exec cp {} . \;
+find . -type d -name $heatmapName -exec rm -r "{}" \;
+find . -type d -empty -delete
