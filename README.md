@@ -1,5 +1,15 @@
-# GenePattern_NGCHM_BasicBuilder
+## GenePattern_NGCHM_BasicBuilder
 A GenePattern module to build NGCHM in GenePattern notebook
+
+## Install NGCHM_BasicBuilder module on local GenePattern Server
+1. Follow the [instructions](https://software.broadinstitute.org/cancer/software/genepattern/download/) to install GenePattern on local machine. 
+2. Click on "Modules & Piplelines" then click on "Install from zip".
+3. Upload the [NGCHM_BasicBuilder.zip](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/blob/master/NGCHM_BasicBuilder.zip) file.
+
+
+
+
+## Use NGCHM_BasicBuilder with GenePattern Notebook
 1. Install genepattern notebook from dockerhub.
 ```
 docker pull genepattern/genepattern-notebook
@@ -10,7 +20,7 @@ docker run -p 8889:8888 -name genepattern-notebook genepattern/genepattern-noteb
 ```
 3. Copy the URL shown on the screen, paste into browser, change port number to 8889.
 4. Click on the dropdown list to insert a GenePattern Cell.
-5. Select NGCHM_BasciBuilder module.
+5. After logging in, select NGCHM_BasciBuilder module.
 6. Upload matrix file. 
 [SampleMatrix](https://raw.githubusercontent.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/master/test_data/400x400.txt)
 7. Upload covariate files if available. 
