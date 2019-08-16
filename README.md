@@ -2,7 +2,7 @@
 A GenePattern module to build NGCHM in GenePattern notebook
 
 ## Install NGCHM_BasicBuilder module on local GenePattern Server
-1. Follow the [instructions](https://software.broadinstitute.org/cancer/software/genepattern/download/) to install GenePattern on local machine. 
+1. Download [GenePattern APP](https://github.com/genepattern/genepattern-server/releases/tag/v3.9.11-rc.4%2Bb228) to install on local machine. 
 2. Click on "Modules & Piplelines" then click on "Install from zip".
 3. Upload the [NGCHM_BasicBuilder.zip](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/blob/master/NGCHM_BasicBuilder.zip) file.
 
