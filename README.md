@@ -8,7 +8,7 @@ A GenePattern module to build NGCHM in GenePattern notebook
 3. Click on "Modules & Piplelines", then click on "Install from zip".
 4. Upload the [NGCHM_BasicBuilder.zip](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/blob/master/NGCHM_BasicBuilder.zip) file.
 
-## Install GenePattern NoteBook manually to Jupyter Notebook (Recommended)
+## Install GenePattern NoteBook manually to Jupyter Notebook
 1. Jupyter notebook is installed in Anaconda.
 2. Install GenePattern notebook using pip.
 ```
@@ -31,7 +31,7 @@ jupyter notebook
 
 [Guide](http://genepattern-notebook.org/install/) from GenePattern Notebook site.
 
-## Use GenePattern Notebook docker (not recommended, the docker image is 16.8G and some unreliable behavior)
+## Use GenePattern Notebook docker
 1. Install genepattern notebook from dockerhub.
 ```
 docker pull genepattern/genepattern-notebook
