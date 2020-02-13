@@ -40,6 +40,9 @@ colConfigJson='"col_configuration": {'
 
 ctr=0
 heatmapName="testRun"
+existing_atrFile=""
+existing_gtrFile=""
+existing_cdtFile=""
 for i in "$@"; do
 	if [ $ctr -gt 1 ]
 	then
@@ -51,6 +54,18 @@ for i in "$@"; do
 			if [ $currParm = "chm_name" ]
 			then
 				heatmapName=$(cut -d'|' -f2 <<< $i)
+			fi
+			if [ $currParm = "existing_atr" ]
+			then				
+				existing_atrFile="$(cut -d'|' -f3 <<< $i)"
+			fi
+			if [ $currParm = "existing_gtr" ]
+			then
+				existing_gtrFile= $(cut -d'|' -f3 <<< $i)
+			fi
+			if [ $currParm = "existing_cdt" ]
+			then
+				existing_cdtFile="$(cut -d'|' -f3 <<< $i)"
 			fi
 	  	fi
 		if [ $currParm = "row_configuration" ]
@@ -103,6 +118,7 @@ for i in "$@"; do
   	fi
 done
 matrixJson=$matrixJson"],"
+
 #END: Construct JSON for data layers
 
 #BEGIN: Construct JSON for classification files
@@ -133,23 +149,39 @@ parmJson=$parmJson'}'
 #echo "HEATMAP PARAMETERS JSON: "$parmJson	
 
 #run R to cluster matrix
-output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
-rc=$?;
-if [ $rc != 0 ]
+
+echo $existing_atrFile
+echo $existing_cdtFile
+if [ ! -z "$existing_cdtFile" ] && [ ! -z "$existing_atrFile" ]
 then
-  echo $output;
-  if [ `echo "$output" | grep -c "Inf in foreign function call"` -gt 0 ]
-  then
-    echo "";
-    echo "Note: This error can occur when there is no variation in a row or column.  Try a different distance measure or remove rows/columns without variation.";
-    echo "This error may also be caused when a covariate file has inadvertently been selected as an Input Matrix.  Check your Input Matrix entry.";
-  fi
-  exit $rc;
+	shaidyRepo=$tdir/shaidy
+	output="$(R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_atrFile $shaidyRepo 2>&1)"
+	rc=$?;
+	if [ $rc != 0 ]
+	then
+	echo $output;
+	exit $rc;
+	fi
+# else
+# 	output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
+# 	rc=$?;
+# 	if [ $rc != 0 ]
+# 	then
+# 	echo $output;
+# 	if [ `echo "$output" | grep -c "Inf in foreign function call"` -gt 0 ]
+# 	then
+# 		echo "";
+# 		echo "Note: This error can occur when there is no variation in a row or column.  Try a different distance measure or remove rows/columns without variation.";
+# 		echo "This error may also be caused when a covariate file has inadvertently been selected as an Input Matrix.  Check your Input Matrix entry.";
+# 	fi
+# 	exit $rc;
+# 	fi
 fi
+
 #call java program to generate NGCHM viewer files.
-java -jar $tooldir/GalaxyMapGen.jar "$parmJson"
+# java -jar $tooldir/GalaxyMapGen.jar "$parmJson"
 #clean up tempdir
-rm -rf $tdir
+# rm -rf $tdir
 
 find .  -name *.png -exec cp {} . \;
 find . -type d -name $heatmapName -exec rm -r "{}" \;
