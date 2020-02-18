@@ -162,6 +162,11 @@ for i in "$@"; do
 		fi
 		
 		inputMatrix=$(cut -d'|' -f3 <<< $i)
+		if [[ "$inputMatrix" == *gct ]]
+		then
+			inputMatrix=${inputMatrix/gct/tsv}
+			`R --slave --vanilla --file=$tooldir/gctTotsv.R --args $inputMatrix`
+		fi
   	fi
 done
 matrixJson=$matrixJson"],"

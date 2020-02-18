@@ -14,7 +14,7 @@ tsvFilePath=paste(shaidyDir,"/matrix.tsv",sep="")
 data=read.csv(cdtFilePath,sep="\t",header=TRUE)
 firstColumn=match(c("NA"),data[1,])+1
 data=data[3:nrow(data),]
-rownames=data$NAME    
+rownames=data[,2]   
 data=data[,firstColumn:ncol(data)]
 row.names(data)<-rownames
 if (endsWith(basename(filePath),"atr")){
