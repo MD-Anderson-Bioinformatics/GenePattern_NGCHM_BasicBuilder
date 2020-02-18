@@ -56,7 +56,7 @@ for i in "$@"; do
 		fi
 		if [ $currParm = "existing_gtr" ]
 		then
-			existing_gtrFile= $(cut -d'|' -f3 <<< $i)
+			existing_gtrFile="$(cut -d'|' -f3 <<< $i)"
 		fi
 		if [ $currParm = "existing_cdt" ]
 		then
@@ -66,7 +66,9 @@ for i in "$@"; do
 	 ctr=$((ctr+1))
 done
 
-
+echo $existing_atrFile
+echo $existing_gtrFile
+echo $existing_cdtFile
 
 ctr=0
 for i in "$@"; do
@@ -87,7 +89,7 @@ for i in "$@"; do
 			fi
 			if [ $currParm = "existing_gtr" ]
 			then
-				existing_gtrFile= $(cut -d'|' -f3 <<< $i)
+				existing_gtrFile="$(cut -d'|' -f3 <<< $i)"
 			fi
 			if [ $currParm = "existing_cdt" ]
 			then
@@ -97,10 +99,6 @@ for i in "$@"; do
 		if [ $currParm = "row_configuration" ]
 		then
 			rowOrder=$(cut -d'|' -f3 <<< $i)
-			if [ -z "$existing_gtrFile" ]
-			then
-				rowOrder="Original"
-			fi
 			rowDistance=$(cut -d'|' -f5 <<< $i)
 			rowAgglomeration=$(cut -d'|' -f7 <<< $i)
 			rowCuts=$(cut -d'|' -f9 <<< $i)
@@ -110,12 +108,14 @@ for i in "$@"; do
 			then
 				rowConfigJson=$rowConfigJson$rowOrderJson$rowDendroJson
 			fi
-			if [ -z "$existing_gtrFile" ]
-			then
-				rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"Original","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
-			else
-				rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
-	  		fi
+		
+			# if [ !  -z "$existing_gtrFile" ]
+			# then
+			# 	# rowConfigJson='"row_configuration": {'
+			# 	rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"Original","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
+			# else
+			rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
+	  		# fi
 		fi
 		if [ $currParm = "col_configuration" ]
 		then
@@ -129,12 +129,13 @@ for i in "$@"; do
 			then
 				colConfigJson=$colConfigJson$colOrderJson$colDendroJson
 			fi
-			if [ -z "$existing_atrFile" ]
-			then
-				colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"Original","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
-			else
-				colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
-	  		fi
+			# if [ !  -z "$existing_atrFile" ]
+			# then
+			# 	# colConfigJson='"col_configuration": {'
+			# 	colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"Original","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
+			# else
+			colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
+	  		# fi
 		fi
 	 fi
 	 ctr=$((ctr+1))
@@ -155,7 +156,7 @@ for i in "$@"; do
 		#Parse pipe-delimited parameter parameter
 		if [ ! -z "$existing_cdtFile" ]
 		then
-			matrixJson=$matrixJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$matrixFile'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"Mode"}'
+			matrixJson=$matrixJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$matrixFile'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"Average"}'
 		else
 			matrixJson=$matrixJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'"}'
 		fi
@@ -216,31 +217,31 @@ then
 	if [ ! -z "$existing_gtrFile" ]
 	then
 		# output="$(R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_atrFile $shaidyRepo )"
-		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_gtrFile $shaidyRepo`
+		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_cdtFile $existing_gtrFile $shaidyRepo`
 		if [ `echo "$output" | grep -c "dendrogram"` -gt 0 ]
 		then
 			shaid="${output//'shaid dendrogram '/}"
 			x2h_row_orderFile=$shaidyRepo/dendrogram/$shaid/dendrogram-order.tsv
 			x2h_row_dendroFile=$shaidyRepo/dendrogram/$shaid/dendrogram-data.tsv
-			`cp $x2h_row_dendroFile $colDendroFile`
-			`cp $x2h_row_orderFile $colOrderFile`
+			`cp $x2h_row_dendroFile $rowDendroFile`
+			`cp $x2h_row_orderFile $rowOrderFile`
 		fi
 	fi
 
-# else
-# 	output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
-# 	rc=$?;
-# 	if [ $rc != 0 ]
-# 	then
-# 	echo $output;
-# 	if [ `echo "$output" | grep -c "Inf in foreign function call"` -gt 0 ]
-# 	then
-# 		echo "";
-# 		echo "Note: This error can occur when there is no variation in a row or column.  Try a different distance measure or remove rows/columns without variation.";
-# 		echo "This error may also be caused when a covariate file has inadvertently been selected as an Input Matrix.  Check your Input Matrix entry.";
-# 	fi
-# 	exit $rc;
-# 	fi
+else
+	output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
+	rc=$?;
+	if [ $rc != 0 ]
+	then
+	echo $output;
+	if [ `echo "$output" | grep -c "Inf in foreign function call"` -gt 0 ]
+	then
+		echo "";
+		echo "Note: This error can occur when there is no variation in a row or column.  Try a different distance measure or remove rows/columns without variation.";
+		echo "This error may also be caused when a covariate file has inadvertently been selected as an Input Matrix.  Check your Input Matrix entry.";
+	fi
+	exit $rc;
+	fi
 fi
 
 
