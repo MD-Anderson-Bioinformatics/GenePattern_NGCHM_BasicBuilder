@@ -215,6 +215,7 @@ then
 			shaid="${output//'shaid dendrogram '/}"
 			x2h_col_orderFile=$shaidyRepo/dendrogram/$shaid/dendrogram-order.tsv
 			x2h_col_dendroFile=$shaidyRepo/dendrogram/$shaid/dendrogram-data.tsv
+			
 			`cp $x2h_col_dendroFile $colDendroFile`
 			`cp $x2h_col_orderFile $colOrderFile`
 		fi
@@ -228,6 +229,7 @@ then
 			shaid="${output//'shaid dendrogram '/}"
 			x2h_row_orderFile=$shaidyRepo/dendrogram/$shaid/dendrogram-order.tsv
 			x2h_row_dendroFile=$shaidyRepo/dendrogram/$shaid/dendrogram-data.tsv
+			
 			`cp $x2h_row_dendroFile $rowDendroFile`
 			`cp $x2h_row_orderFile $rowOrderFile`
 		fi
