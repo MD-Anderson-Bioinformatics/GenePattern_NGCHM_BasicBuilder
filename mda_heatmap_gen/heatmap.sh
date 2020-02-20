@@ -95,13 +95,12 @@ for i in "$@"; do
 				rowConfigJson=$rowConfigJson$rowOrderJson$rowDendroJson
 			fi
 		
-			# if [ !  -z "$existing_gtrFile" ]
-			# then
-			# 	# rowConfigJson='"row_configuration": {'
-			# 	rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"Original","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
-			# else
-			rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
-	  		# fi
+			if [ !  -z "$existing_gtrFile" ]
+			then
+				rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"From .gtr","'$(cut -d'|' -f6 <<< $i)'":"From .gtr",'$dataTypeJson'},'
+			else
+				rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
+	  		fi
 		fi
 		if [ $currParm = "col_configuration" ]
 		then
@@ -115,13 +114,12 @@ for i in "$@"; do
 			then
 				colConfigJson=$colConfigJson$colOrderJson$colDendroJson
 			fi
-			# if [ !  -z "$existing_atrFile" ]
-			# then
-			# 	# colConfigJson='"col_configuration": {'
-			# 	colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"Original","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
-			# else
-			colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
-	  		# fi
+			if [ !  -z "$existing_atrFile" ]
+			then
+				colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"From .atr","'$(cut -d'|' -f6 <<< $i)'":"From .atr",'$dataTypeJson'},'
+			else
+				colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
+	  		fi
 		fi
 	 fi
 	 ctr=$((ctr+1))
