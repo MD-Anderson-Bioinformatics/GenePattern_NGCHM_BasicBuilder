@@ -97,7 +97,9 @@ for i in "$@"; do
 		
 			if [ !  -z "$existing_gtrFile" ]
 			then
+				rowOrder="Original"
 				rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"From .gtr","'$(cut -d'|' -f6 <<< $i)'":"From .gtr",'$dataTypeJson'},'
+				rowConfigJson=${rowConfigJson/Original/Hierarchical}
 			else
 				rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
 	  		fi
@@ -116,7 +118,9 @@ for i in "$@"; do
 			fi
 			if [ !  -z "$existing_atrFile" ]
 			then
+				colOrder="Original"
 				colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"From .atr","'$(cut -d'|' -f6 <<< $i)'":"From .atr",'$dataTypeJson'},'
+				colConfigJson=${colConfigJson/Original/Hierarchical}
 			else
 				colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
 	  		fi
@@ -189,7 +193,8 @@ echo "HEATMAP PARAMETERS JSON: "$parmJson
 
 #run R to cluster matrix
 
-if [[ "$inputMatrix" == *cdt ]] && { [ ! -z "$existing_atrFile" ] || [ ! -z "$existing_gtrFile" ]; };
+# if [[ "$inputMatrix" == *cdt ]] && { [ ! -z "$existing_atrFile" ] || [ ! -z "$existing_gtrFile" ]; };
+if [[ "$inputMatrix" == *cdt ]]
 then
 	shaidyRepo=$tdir/shaidy
 	if [ ! -z "$existing_atrFile" ]
@@ -220,15 +225,25 @@ then
 			`cp $x2h_row_orderFile $rowOrderFile`
 		fi
 	fi
-	
-
-else
-	if [[ "$inputMatrix" == *cdt ]]
+	if [ -z "$existing_atrFile" ] && [ -z "$existing_gtrFile" ]
 	then
 		shaidyRepo=$tdir/shaidy
 		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $inputMatrix empty $shaidyRepo`
+	fi
+
+fi	
+
+
+if  [[ "$inputMatrix" == *cdt ]] && [ ! -z "$existing_atrFile" ] && [ ! -z "$existing_gtrFile" ]
+then
+	echo "no need to run hclust"
+else
+	echo "run hclust"
+	if  [[ "$inputMatrix" == *cdt ]]
+	then
 		inputMatrix=$matrixFile
 	fi
+	echo $inputMatrix.' '.$rowOrder.' '.$rowDistance.' '.$rowAgglomeration.' '.$colOrder.' '.$colDistance.' '.$colAgglomeration.' '.$rowOrderFile.' '.$colOrderFile.' '.$rowDendroFile.' '.$colDendroFile.' '.$rowCuts.' '.$colCuts.' '.$rowLabels.' '.$colLabels
 	output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
 	rc=$?;
 	if [ $rc != 0 ]
