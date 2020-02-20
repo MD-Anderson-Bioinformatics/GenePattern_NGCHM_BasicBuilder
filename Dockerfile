@@ -1,37 +1,26 @@
-# FROM genepattern/docker-java18
+FROM python:3.6
 
-##### APT-GET #####
+ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 
-# RUN echo "deb http://ftp.de.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
-#    apt-get update && apt-get install -y -t stretch-backports zip r-base vim
+RUN set -e; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+    software-properties-common \
+    ; \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9; \
+    apt-add-repository 'deb http://repos.azulsystems.com/debian stable main'; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+    zulu-8 \
+    ; \
+    apt-get clean; \
+    rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
+RUN set -e; \
+    pip install JPype1
 
-# RUN apt-get update && apt-get upgrade -y
+RUN apt-get update && apt-get install -y r-base vim
 
-# ADD ./mda_heatmap_gen/* /home/mda_heatmap_gen/
-
-# WORKDIR /home/
-
-# COPY ./NGCHMR-0.9.6.tar.gz /home/
-# COPY ./tsvio.tar.gz /home/
-# RUN R -e "install.packages('digest',dependencies=TRUE, repos='http://cran.rstudio.com/')"
-# RUN R -e "install.packages('httr',dependencies=TRUE, repos='http://cran.rstudio.com/')"
-# RUN R -e "install.packages('tsvio.tar.gz',repos=NULL)"
-# RUN R -e "install.packages('NGCHMR-0.9.6.tar.gz',repos=NULL)"
-# COPY ./Requirments.R /home/
-# RUN Rscript Requirments.R
-
-
-FROM node:10.15
-
-
-ENV R_BASE_VERSION 3.3.0
-
-RUN echo "deb http://ftp.de.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
-    apt-get update && apt-get install -y -t stretch-backports ca-certificates-java openjdk-8-jre-headless zip fonts-liberation gsfonts r-base vim
-
-
-RUN apt-get update && apt-get upgrade -y
 
 WORKDIR /home/
 
