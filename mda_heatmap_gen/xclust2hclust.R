@@ -27,7 +27,7 @@ get_rowOrder<-function(data,firstColumn){
 	return (as.vector(rowLabel[,2]))
 
 }
-source("./xcluster2r.R")
+source("/home/mda_heatmap_gen/xcluster2r.R")
 options(warn=-1)
 args = commandArgs(trailingOnly=TRUE)
 cdtFilePath = args [1]
