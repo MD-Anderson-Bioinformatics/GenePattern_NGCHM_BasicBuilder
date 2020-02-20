@@ -146,20 +146,19 @@ for i in "$@"; do
 		if [[ "$inputMatrix" == *cdt ]]
 		then
 			matrixJson=$matrixJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$matrixFile'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"Average"}'
-		fi
-		if [[ "$inputMatrix" == *tsv ]]
-		then
+		else
 			matrixJson=$matrixJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'"}'
-		fi
-		if [[ "$inputMatrix" == *gct ]]
-		then
-			`R --slave --vanilla --file=$tooldir/gctTotsv.R --args $inputMatrix`
-			inputMatrix=${inputMatrix/gct/tsv}
-			matrixJson=${matrixJson/gct/tsv}
-		fi
-  	fi
+			if [[ "$inputMatrix" == *gct ]]
+			then
+				`R --slave --vanilla --file=$tooldir/gctTotsv.R --args $inputMatrix`
+				inputMatrix=${inputMatrix/gct/tsv}
+				matrixJson=${matrixJson/gct/tsv}
+			fi
+  		fi
+	fi
 done
 matrixJson=$matrixJson"],"
+
 
 #END: Construct JSON for data layers
 
@@ -193,7 +192,6 @@ echo "HEATMAP PARAMETERS JSON: "$parmJson
 
 #run R to cluster matrix
 
-# if [[ "$inputMatrix" == *cdt ]] && { [ ! -z "$existing_atrFile" ] || [ ! -z "$existing_gtrFile" ]; };
 if [[ "$inputMatrix" == *cdt ]]
 then
 	shaidyRepo=$tdir/shaidy
@@ -232,6 +230,12 @@ then
 	fi
 
 fi	
+
+if [[ "$inputMatrix" != *cdt ]] && { [ ! -z "$existing_atrFile" ] || [ ! -z "$existing_gtrFile" ]; };
+then
+	echo ".cdt file is required if .atr or .gtr is provided."
+	exit 1
+fi
 
 
 if  [[ "$inputMatrix" == *cdt ]] && [ ! -z "$existing_atrFile" ] && [ ! -z "$existing_gtrFile" ]
