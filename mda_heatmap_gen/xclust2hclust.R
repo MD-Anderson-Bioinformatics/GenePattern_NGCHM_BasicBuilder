@@ -27,26 +27,27 @@ get_rowOrder<-function(data,firstColumn){
 	return (as.vector(rowLabel[,2]))
 
 }
-source("/home/mda_heatmap_gen/xcluster2r.R")
+# source("/home/mda_heatmap_gen/xcluster2r.R")
+source("./xcluster2r.R")
 options(warn=-1)
 args = commandArgs(trailingOnly=TRUE)
 cdtFilePath = args [1]
 filePath = args[2]
 shaidyDir = args[3]
-result=xcluster2r(filePath,distance='euclidean',fast=TRUE)
+result="empty"
+if (filePath!="empty"){
+    result=xcluster2r(filePath,distance='euclidean',fast=TRUE)
+}
 tsvFilePath=paste(shaidyDir,"/matrix.tsv",sep="")
-
 data=read.csv(cdtFilePath,sep="\t",header=TRUE)
 firstColumn=match(c("NA"),data[1,])+1
 colOrder=get_colOrder(data,firstColumn)
 rowOrder=get_rowOrder(data,firstColumn)
 
 if (endsWith(basename(filePath),"atr")){
-	
     result$labels=colOrder
 }
 if (endsWith(basename(filePath),"gtr")){
-	
     result$labels=rowOrder
 }
 
@@ -56,12 +57,16 @@ data=data[,firstColumn:ncol(data)]
 row.names(data)<-rownames
 data=data[rowOrder,colOrder]
 
-ddg <- stats::as.dendrogram(result)
-if(!file.exists(shaidyDir)){
-    shaidyInitRepository (shaidyDir, c("collection", "chm", "dataset", "dendrogram", "label", "tile", "viewer", "file"))
+if (result!="empty"){
+    ddg <- stats::as.dendrogram(result)
+    if(!file.exists(shaidyDir)){
+        shaidyInitRepository (shaidyDir, c("collection", "chm", "dataset", "dendrogram", "label", "tile", "viewer", "file"))
+    }
+    shaidyRepo=shaidyLoadRepository ('file',shaidyDir)
+    ngchmSaveAsDendrogramBlob(shaidyRepo, ddg)
+}else{
+    dir.create(file.path(shaidyDir), showWarnings = FALSE)
 }
-shaidyRepo=shaidyLoadRepository ('file',shaidyDir)
-ngchmSaveAsDendrogramBlob(shaidyRepo, ddg)
 
 if(!file.exists(tsvFilePath)){
     write.table(data,tsvFilePath,quote=FALSE,sep="\t",col.names = NA)

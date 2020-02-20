@@ -43,7 +43,7 @@ ctr=0
 heatmapName="testRun"
 existing_atrFile=""
 existing_gtrFile=""
-existing_cdtFile=""
+
 
 
 for i in "$@"; do
@@ -58,17 +58,15 @@ for i in "$@"; do
 		then
 			existing_gtrFile="$(cut -d'|' -f3 <<< $i)"
 		fi
-		if [ $currParm = "existing_cdt" ]
-		then
-			existing_cdtFile="$(cut -d'|' -f3 <<< $i)"
-		fi
+	
+		
 	fi
 	 ctr=$((ctr+1))
 done
 
 echo $existing_atrFile
 echo $existing_gtrFile
-echo $existing_cdtFile
+
 
 ctr=0
 for i in "$@"; do
@@ -83,18 +81,6 @@ for i in "$@"; do
 			then
 				heatmapName=$(cut -d'|' -f2 <<< $i)
 			fi
-			if [ $currParm = "existing_atr" ]
-			then				
-				existing_atrFile="$(cut -d'|' -f3 <<< $i)"
-			fi
-			if [ $currParm = "existing_gtr" ]
-			then
-				existing_gtrFile="$(cut -d'|' -f3 <<< $i)"
-			fi
-			if [ $currParm = "existing_cdt" ]
-			then
-				existing_cdtFile="$(cut -d'|' -f3 <<< $i)"
-			fi
 	  	fi
 		if [ $currParm = "row_configuration" ]
 		then
@@ -104,7 +90,7 @@ for i in "$@"; do
 			rowCuts=$(cut -d'|' -f9 <<< $i)
 			rowLabels=$(cut -d'|' -f11 <<< $i)
 			dataTypeJson='"'$(cut -d'|' -f10 <<< $i)'":["'$rowLabels'"]'
-			if [ $rowOrder = 'Hierarchical' ]
+			if [ $rowOrder = 'Hierarchical' ] || [ !  -z "$existing_gtrFile" ]
 			then
 				rowConfigJson=$rowConfigJson$rowOrderJson$rowDendroJson
 			fi
@@ -125,7 +111,7 @@ for i in "$@"; do
 			colCuts=$(cut -d'|' -f9 <<< $i)
 			colLabels=$(cut -d'|' -f11 <<< $i)
 			dataTypeJson='"'$(cut -d'|' -f10 <<< $i)'":["'$colLabels'"]'
-			if [ $colOrder = 'Hierarchical' ]
+			if [ $colOrder = 'Hierarchical' ] || [ !  -z "$existing_atrFile" ]
 			then
 				colConfigJson=$colConfigJson$colOrderJson$colDendroJson
 			fi
@@ -154,14 +140,15 @@ for i in "$@"; do
 	if [ $currParm = "matrix_files" ]
 	then
 		#Parse pipe-delimited parameter parameter
-		if [ ! -z "$existing_cdtFile" ]
+		inputMatrix=$(cut -d'|' -f3 <<< $i)
+		if [[ "$inputMatrix" == *cdt ]]
 		then
 			matrixJson=$matrixJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$matrixFile'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"Average"}'
-		else
+		fi
+		if [[ "$inputMatrix" == *tsv ]]
+		then
 			matrixJson=$matrixJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'"}'
 		fi
-		
-		inputMatrix=$(cut -d'|' -f3 <<< $i)
 		if [[ "$inputMatrix" == *gct ]]
 		then
 			`R --slave --vanilla --file=$tooldir/gctTotsv.R --args $inputMatrix`
@@ -204,13 +191,13 @@ echo "HEATMAP PARAMETERS JSON: "$parmJson
 
 #run R to cluster matrix
 
-if [ ! -z "$existing_cdtFile" ] 
+if [[ "$inputMatrix" == *cdt ]] && { [ ! -z "$existing_atrFile" ] || [ ! -z "$existing_gtrFile" ]; };
 then
 	shaidyRepo=$tdir/shaidy
 	if [ ! -z "$existing_atrFile" ]
 	then
 		# output="$(R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_atrFile $shaidyRepo )"
-		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_cdtFile $existing_atrFile $shaidyRepo`
+		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $inputMatrix $existing_atrFile $shaidyRepo`
 		if [ `echo "$output" | grep -c "dendrogram"` -gt 0 ]
 		then
 			shaid="${output//'shaid dendrogram '/}"
@@ -224,7 +211,7 @@ then
 	if [ ! -z "$existing_gtrFile" ]
 	then
 		# output="$(R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_atrFile $shaidyRepo )"
-		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_cdtFile $existing_gtrFile $shaidyRepo`
+		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $inputMatrix $existing_gtrFile $shaidyRepo`
 		if [ `echo "$output" | grep -c "dendrogram"` -gt 0 ]
 		then
 			shaid="${output//'shaid dendrogram '/}"
@@ -235,8 +222,15 @@ then
 			`cp $x2h_row_orderFile $rowOrderFile`
 		fi
 	fi
+	
 
 else
+	if [[ "$inputMatrix" == *cdt ]]
+	then
+		shaidyRepo=$tdir/shaidy
+		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $inputMatrix empty $shaidyRepo`
+		inputMatrix=$matrixFile
+	fi
 	output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
 	rc=$?;
 	if [ $rc != 0 ]
