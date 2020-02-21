@@ -1,7 +1,7 @@
 #NGCHM_BasicBuilder
 #Fri Feb 21 11:54:12 CST 2020
 JVMLevel=
-LSID=urn\:lsid\:8080.jma7.BSTMC07TP062G1J.local.192.168.1.61\:genepatternmodules\:3\:3
+LSID=urn\:lsid\:8080.jma7\:genepatternmodules\:3\:3
 author=Jun Ma;MD Anderson Cancer Center
 categories=Clustering
 commandLine=/home/mda_heatmap_gen/heatmap.sh /home/mda_heatmap_gen/ /home/ "chm_name|<hmname>"  "chm_description|<hmdesc>" "matrix_files|path|<inputmatrix>|name|datalayer|summary_method|<summarymethod>" "row_configuration|order_method|<rowOrderMethod>|distance_metric| <rowDistanceMeasure>|agglomeration_method|<rowAgglomerationMethod>|tree_covar_cuts|0|data_type|labels" "col_configuration|order_method|<columnOrderMethod>|distance_metric|<columnDistanceMeasure>|agglomeration_method|<columnAgglomerationMethod>|tree_covar_cuts|0|data_type|labels"  "classification|name|<rowCovariateName>|path|<rowCovariateInput>|category|<rowCovariateType>"  "classification|name|<columnCovariateName>|path|<columnCovariateInput>|category|<columnCovariateType>" "output_location|<output>"    "existing_atr|path|<atrFile>" "existing_gtr|path|<gtrFile>"
