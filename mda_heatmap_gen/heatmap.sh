@@ -269,7 +269,7 @@ fi
 java -jar $tooldir/GalaxyMapGen.jar "$parmJson"
 
 #clean up tempdir
-# rm -rf $tdir
+rm -rf $tdir
 
 find .  -name *.png -exec cp {} . \;
 find . -type d -name $heatmapName -exec rm -r "{}" \;
