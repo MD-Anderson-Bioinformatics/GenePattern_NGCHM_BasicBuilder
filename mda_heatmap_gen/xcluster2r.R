@@ -74,12 +74,14 @@ data2   <-  as.integer(substr(data2,5,nchar(data2)-1))
 data2   <-  data2*i2+i2+data2*(1+i2)
 if(substr(distance,1,1)=="e")
    {
-    median_number=median(data[,4])
-    factor=1/median_number
-    Hheight <- 2 / (data[,4]*factor+0.1)   #Distance = Euclidean 
+    # median_number=median(data[,4])
+    # factor=1/median_number
+    # Hheight <- 2 / (data[,4]*factor+0.1)   #Distance = Euclidean 
+    Hheight <- 1 / data[,4]
+    Hheight <- Hheight-min(Hheight)+0.1
    }
    else{
-   Hheight <- 1-data[,4]           #Distance = pearson (centered or not)
+        Hheight <- 1-data[,4]           #Distance = pearson (centered or not)
    }
 rm(data)
 

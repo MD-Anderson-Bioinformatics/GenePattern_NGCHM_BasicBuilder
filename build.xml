@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="" default="create-zip" name="NGCHM_BasicBuilder">
+<!-- <property name="dirOffset" value="../common_module_code" />
+<import file="${dirOffset}/commontargets.xml" /> -->
+
+<target name="create-zip">
+    <!-- <antcall target="prezip"/> -->
+    <property name="dest.dir" value="build" />
+    <zip destfile="${dest.dir}/${ant.project.name}.zip" whenempty="fail" defaultexcludes="true">
+        <fileset dir="." includes="manifest, doc.html, paramgroups.json"/>
+        <fileset dir="mda_heatmap_gen" includes="*.R, *.jar, *.sh, *.py"/>
+    </zip>
+    <!-- <antcall target="postzip"/> -->
+</target>
+
+</project>

@@ -1,0 +1,3 @@
+[{name: "Basic parameters", 
+  parameters: ["input.matrix", "NGCHM.name", "NGCHM.desc","summary.method","row.order.method","row.distance.measure","row.agglomeration.method","gtr.file","column.order.method","column.distance.measure","column.agglomeration.method","atr.file","row.covariate.name","row.covariate.input","row.covariate.type","column.covariate.name","column.covariate.input","column.covariate.type","output"]}
+]
