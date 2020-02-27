@@ -22,10 +22,7 @@ NG-CHMs include the following interactive capabilities (among many others):
 
 Name | Description
 ------------ | -------------
-input matrix | input file type .tsv,.gct,.cdt
-				* .tsv:
-				* .gct:
-				* .cdt:
+input matrix | input file type .tsv,.gct,.cdt<br>* .tsv:<br>* .gct:<br>* .cdt:
 NGCHM name | Content in the second column
 NGCHM desc | Content from cell 2
 summary method | Content in the second column
