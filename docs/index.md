@@ -17,8 +17,8 @@ NG-CHMs include the following interactive capabilities (among many others):
 * Annotation with pathway data.
 * Capture of all metadata necessary to reproduce any chosen state of the map, even months or years later.
 
-## Input
  Other NGCHM Builders ([Galaxy Builder](https://github.com/MD-Anderson-Bioinformatics/NG-CHM_Galaxy),[R buidler](https://github.com/MD-Anderson-Bioinformatics/NGCHM-R) or [online builder](http://build.ngchm.net/NGCHM-web-builder/)).
+## Input
 
 Name | Description
 ------------ | -------------
@@ -44,6 +44,7 @@ output | Name of output ngchm file.
 
 
 ## Output
+
 Name | Description
 ------------ | -------------
 ngchm file | .ngchm file, you could view the NGCHM with NGCHM_Viewer module.
