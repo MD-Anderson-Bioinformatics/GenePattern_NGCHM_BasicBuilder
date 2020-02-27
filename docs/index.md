@@ -29,11 +29,11 @@ summary method | Average, Mode, Sample
 row order method | Hierarchical(default), Original, Random
 row distance measure | manhattan, euclidean(default), maximum, minkowski (Optional, required if row order method is Hierarchical)
 row agglomeration method | average, complete, single, ward.D(default), mcquitty (Optional, required if row order method is Hierarchical)
-gtr file | Gene tree file, records the order in which rows were joined.<br>If gtr file is provided, then cdt file is required. (Optional, if you have gtr and cdt file generated from Hierarchical cluster module or other tools, you could upload files and convert into ngchm.)
+gtr file | Gene tree file, records the order in which rows were joined.<br>If gtr file is provided, then cdt file is required. (Optional, if you have gtr and cdt file generated from [Hierarchical cluster module](https://www.genepattern.org/modules/docs/HierarchicalClustering/8) or other tools, you could upload files and convert them into ngchm.)
 column order method | Hierarchical(default), Original, Random
 column distance measure | manhattan, euclidean(default), maximum, minkowski (Optional, required if column order method is Hierarchical)
 column agglomeration method | average, complete, single, ward.D(default), mcquitty (Optional, required if column order method is Hierarchical)
-atr file | Array tree file, records the order in which columns were joined.<br>If atr file is provided, then cdt file is required. (Optional, if you have atr and cdt file generated from Hierarchical cluster module or other tools, you could upload files and convert into ngchm.)
+atr file | Array tree file, records the order in which columns were joined.<br>If atr file is provided, then cdt file is required. (Optional, if you have atr and cdt file generated from [Hierarchical cluster module](https://www.genepattern.org/modules/docs/HierarchicalClustering/8) or other tools, you could upload files and convert them into ngchm.)
 row covariate name | Name of the row covariate.(Optional)
 row covariate input | tsv file with row label and covariate value on each line.(Optional)
 row covariate type | discrete, continuous (Optional)
@@ -47,7 +47,7 @@ output | Name of output ngchm file.
 
 Name | Description
 ------------ | -------------
-ngchm file | .ngchm file, you could view the NGCHM with NGCHM_Viewer module.
+ngchm file | .ngchm file, you could view the NGCHM with [NGCHM_Viewer module](https://md-anderson-bioinformatics.github.io/GenePattern_NGCHM_Viewer/).
 stderr.txt | error log
 stdout.txt | processing log
 
