@@ -20,7 +20,7 @@ NG-CHMs include the following interactive capabilities (among many others):
 ## Input
  Other NGCHM Builders ([Galaxy Builder](https://github.com/MD-Anderson-Bioinformatics/NG-CHM_Galaxy),[R buidler](https://github.com/MD-Anderson-Bioinformatics/NGCHM-R) or [online builder](http://build.ngchm.net/NGCHM-web-builder/)).
 
- Name | Description
+Name | Description
 ------------ | -------------
 input matrix | input file type .tsv,.gct,.cdt
 				* .tsv:
