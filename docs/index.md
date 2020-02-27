@@ -22,30 +22,32 @@ NG-CHMs include the following interactive capabilities (among many others):
 
 Name | Description
 ------------ | -------------
-input matrix | input file type .tsv,.gct,.cdt<br>* .tsv:<br>* .gct:<br>* .cdt:
-NGCHM name | Content in the second column
-NGCHM desc | Content from cell 2
-summary method | Content in the second column
-row order method | Content from cell 2
-row distance measure | Content in the second column
-row agglomeration method | Content from cell 2
-gtr file | Content in the second column
-column order method | Content from cell 2
-column distance measure | Content in the second column
-column agglomeration method | Content from cell 2
-atr file | Content in the second column
-row covariate name | Content from cell 2
-row covariate input | Content in the second column
-row covariate type | Content from cell 2
-column covariate name | Content from cell 2
-column covariate input | Content in the second column
-column covariate type | Content from cell 2
-output | output
+input matrix | input file type .tsv,.gct,.cdt<br>* .tsv: tab-deliminated matrix file<br>* .gct: tab-deliminated matrix file with additional information<br>* .cdt: reordered matrix file
+NGCHM name | Name of NGCHM
+NGCHM desc | Brief description of the data
+summary method | Average, Mode, Sample
+row order method | Hierarchical(default), Original, Random
+row distance measure | manhattan, euclidean(default), maximum, minkowski (Optional, required if row order method is Hierarchical)
+row agglomeration method | average, complete, single, ward.D(default), mcquitty (Optional, required if row order method is Hierarchical)
+gtr file | Gene tree file, records the order in which rows were joined.<br>If gtr file is provided, then cdt file is required. (Optional, if you have gtr and cdt file generated from Hierarchical cluster module or other tools, you could upload files and convert into ngchm.)
+column order method | Hierarchical(default), Original, Random
+column distance measure | manhattan, euclidean(default), maximum, minkowski (Optional, required if column order method is Hierarchical)
+column agglomeration method | average, complete, single, ward.D(default), mcquitty (Optional, required if column order method is Hierarchical)
+atr file | Array tree file, records the order in which columns were joined.<br>If atr file is provided, then cdt file is required. (Optional, if you have atr and cdt file generated from Hierarchical cluster module or other tools, you could upload files and convert into ngchm.)
+row covariate name | Name of the row covariate.(Optional)
+row covariate input | tsv file with row label and covariate value on each line.(Optional)
+row covariate type | discrete, continuous (Optional)
+column covariate name | Name of the column covariate.(Optional)
+column covariate input | tsv file with column label and covariate value on each line.(Optional)
+column covariate type | discrete, continuous (Optional)
+output | Name of output ngchm file.
 
 
 ## Output
 Name | Description
 ------------ | -------------
-ngchm file | .ngchm file
+ngchm file | .ngchm file, you could view the NGCHM with NGCHM_Viewer module.
+stderr.txt | error log
+stdout.txt | processing log
 
 
