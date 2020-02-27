@@ -6,7 +6,7 @@
 <target name="create-zip">
     <!-- <antcall target="prezip"/> -->
     <property name="dest.dir" value="build" />
-    <zip destfile="${dest.dir}/${ant.project.name}.zip" whenempty="fail" defaultexcludes="true">
+    <zip destfile="${dest.dir}/${ant.project.name}_update.zip" whenempty="fail" defaultexcludes="true">
         <fileset dir="." includes="manifest, doc.html, paramgroups.json"/>
         <fileset dir="mda_heatmap_gen" includes="*.R, *.jar, *.sh, *.py"/>
     </zip>
