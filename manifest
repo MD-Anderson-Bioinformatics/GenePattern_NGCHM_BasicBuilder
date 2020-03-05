@@ -1,14 +1,14 @@
 #NGCHM_BasicBuilder
-#Thu Feb 27 14:52:46 CST 2020
+#Thu Mar 05 09:57:59 CST 2020
 JVMLevel=
-LSID=urn\:lsid\:8080.jma7.\:genepatternmodules\:3\:4
+LSID=urn\:lsid\:8080.jma7.\:genepatternmodules\:16\:5
 author=Jun Ma;MD Anderson Cancer Center
 categories=Clustering
 commandLine=/home/mda_heatmap_gen/heatmap.sh /home/mda_heatmap_gen/ /home/ "chm_name|<NGCHM.name>"  "chm_description|<NGCHM.desc>" "matrix_files|path|<Input.matrix>|name|datalayer|summary_method|<Summary.method>" "row_configuration|order_method|<Row.order.method>|distance_metric| <Row.distance.measure>|agglomeration_method|<Row.agglomeration.method>|tree_covar_cuts|0|data_type|labels" "col_configuration|order_method|<Column.order.method>|distance_metric|<Column.distance.measure>|agglomeration_method|<Column.agglomeration.method>|tree_covar_cuts|0|data_type|labels"  "classification|name|<Row.covariate.name>|path|<Row.covariate.input>|category|<Row.covariate.type>"  "classification|name|<Column.covariate.name>|path|<Column.covariate.input>|category|<Column.covariate.type>" "output_location|<Output>"    "existing_atr|path|<atr.file>" "existing_gtr|path|<gtr.file>"
 cpuType=any
 description=Build Next-Generation Clustered Heat Maps (NG-CHMs). NG-CHMs enable the user to zoom and navigate dynamically and link out to dozens of external data resources and tools. For details, please check http\://www.ngchm.net/ .
 fileFormat=Dataset
-job.docker.image=genepattern_ngchm\:latest
+job.docker.image=ngchm/ngchm-builder-genepattern\:latest
 language=Java
 name=NGCHM_BasicBuilder
 os=any
