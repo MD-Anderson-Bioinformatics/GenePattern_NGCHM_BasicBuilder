@@ -73,15 +73,34 @@ for i in "$@"; do
 	if [ $ctr -gt 1 ]
 	then
 		currParm=$(cut -d'|' -f1 <<< $i)
-		if [ $currParm != "matrix_files" ] && [ $currParm != "row_configuration" ] && [ $currParm != "col_configuration" ] && [ $currParm != "classification" ]
+		if [ $currParm != "chm_name" ] && [ $currParm != "output_location" ] && [ $currParm != "matrix_files" ] && [ $currParm != "row_configuration" ] && [ $currParm != "col_configuration" ] && [ $currParm != "classification" ]
 		then
 			#Parse pipe-delimited parameter parameter
 			parmJson=$parmJson' "'$(cut -d'|' -f1 <<< $i)'":"'$(cut -d'|' -f2 <<< $i)'",'
-			if [ $currParm = "chm_name" ]
-			then
-				heatmapName=$(cut -d'|' -f2 <<< $i)
-			fi
+			# if [ $currParm = "chm_name" ]
+			# then
+			# 	heatmapName=$(cut -d'|' -f2 <<< $i)
+			# 	heatmapName="${heatmapName//\\/_}"
+			# 	heatmapName="${heatmapName//\//_}"
+				
+			# fi
 	  	fi
+		if [ $currParm = "chm_name" ]
+		then
+			heatmapName=$(cut -d'|' -f2 <<< $i)
+			heatmapName="${heatmapName//\\/_}"
+			heatmapName="${heatmapName//\//_}"
+			parmJson=$parmJson' "'$(cut -d'|' -f1 <<< $i)'":"'$heatmapName'",'
+		fi
+		if [ $currParm = "output_location" ]
+		then
+			output_location=$(cut -d'|' -f2 <<< $i)
+			outputName="${output_location/$tooldata/}"
+			outputName="${outputName//\\/_}"
+			outputName="${outputName//\//_}"
+			parmJson=$parmJson' "'$(cut -d'|' -f1 <<< $i)'":"'$outputName'",'
+			echo $tooldata$outputName
+		fi
 		if [ $currParm = "row_configuration" ]
 		then
 			rowOrder=$(cut -d'|' -f3 <<< $i)
@@ -160,6 +179,7 @@ done
 matrixJson=$matrixJson"],"
 
 
+
 #END: Construct JSON for data layers
 
 #BEGIN: Construct JSON for classification files
@@ -188,7 +208,7 @@ classJson=$classJson']'
 
 parmJson=$parmJson$matrixJson$rowConfigJson$colConfigJson$classJson
 parmJson=$parmJson'}'
-echo "HEATMAP PARAMETERS JSON: "$parmJson	
+# echo "HEATMAP PARAMETERS JSON: "$parmJson	
 
 #run R to cluster matrix
 
@@ -247,7 +267,7 @@ else
 	then
 		inputMatrix=$matrixFile
 	fi
-	echo $inputMatrix.' '.$rowOrder.' '.$rowDistance.' '.$rowAgglomeration.' '.$colOrder.' '.$colDistance.' '.$colAgglomeration.' '.$rowOrderFile.' '.$colOrderFile.' '.$rowDendroFile.' '.$colDendroFile.' '.$rowCuts.' '.$colCuts.' '.$rowLabels.' '.$colLabels
+	echo $rowOrder' '$rowDistance' '$rowAgglomeration' '$colOrder' '$colDistance' '$colAgglomeration' '$rowOrderFile' '$colOrderFile' '$rowDendroFile' '$colDendroFile' '$rowCuts' '$colCuts' '$rowLabels' '$colLabels
 	output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
 	rc=$?;
 	if [ $rc != 0 ]
