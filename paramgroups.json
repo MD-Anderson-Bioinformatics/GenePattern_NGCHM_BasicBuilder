@@ -1,5 +1,5 @@
 [{name: "Basic parameters", 
-  parameters: ["Input.matrix", "NGCHM.name", "NGCHM.desc","Summary.method","Row.order.method","Row.distance.measure","Row.agglomeration.method","gtr.file","Column.order.method","Column.distance.measure","Column.agglomeration.method","atr.file","Output"]},
+  parameters: ["Input.filename", "NGCHM.name", "NGCHM.desc","Summary.method","Row.ordering.options","Row.distance.measure","Row.agglomeration.method","gtr.file","Column.ordering.options","Column.distance.measure","Column.agglomeration.method","atr.file","Output.base.name"]},
   {name: "Covariates", hidden:true,
   parameters: ["Row.covariate.name","Row.covariate.input","Row.covariate.type","Column.covariate.name","Column.covariate.input","Column.covariate.type"]}
 ]
