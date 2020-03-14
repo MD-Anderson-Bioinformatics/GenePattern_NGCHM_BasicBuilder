@@ -18,6 +18,12 @@
 performDataOrdering<-function(dataFile, rowOrderMethod, rowDistanceMeasure, rowAgglomerationMethod, colOrderMethod, colDistanceMeasure, colAgglomerationMethod,rowOrderFile, colOrderFile, rowDendroFile, colDendroFile, rowCut, colCut)
 { 
    dataMatrix = read.table(dataFile, header=TRUE, sep = "\t", check.names = FALSE, row.names = 1, as.is=TRUE, na.strings=c("NA","N/A","-","?"))
+   nrows=nrow(dataMatrix)
+   ncols=ncol(dataMatrix)
+   if (nrows+ncols>10000) {
+      write("The sum of number of rows and number of columns should be smaller than 10000.",stderr())
+      quit(status=1)
+   }
    rowOrder <-  createOrdering(dataMatrix, rowOrderMethod, "row", rowDistanceMeasure, rowAgglomerationMethod)  
    if (rowOrderMethod == "Hierarchical") {
       writeHCDataTSVs(rowOrder, rowDendroFile, rowOrderFile)
