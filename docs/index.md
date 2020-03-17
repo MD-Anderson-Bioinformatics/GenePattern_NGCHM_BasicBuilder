@@ -1,4 +1,4 @@
-## GenePattern NGCHM Basic Builder
+## Next.Gen.Clustered.Heat.Map.Builder
 A GenePattern Module to build Next-Generation Clustered Heat Maps (NG-CHMs) in GenePattern Notebook.
 For details about NG-CHM, please check [NG-CHMs website](http://www.ngchm.net/)
 
@@ -47,7 +47,7 @@ output base name | Name of output ngchm file.
 
 Name | Description
 ------------ | -------------
-ngchm file | .ngchm file, you could view the NGCHM with [NGCHM_Viewer module](https://md-anderson-bioinformatics.github.io/GenePattern_NGCHM_Viewer/).
+ngchm file | .ngchm file, you could view the NGCHM with [	Next.Gen.Clustered.Heat.Map.Viewer module](https://md-anderson-bioinformatics.github.io/GenePattern_NGCHM_Viewer/).
 stderr.txt | error log
 stdout.txt | processing log
 
