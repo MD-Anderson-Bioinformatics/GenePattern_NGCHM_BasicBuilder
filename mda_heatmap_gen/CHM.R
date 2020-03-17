@@ -20,8 +20,8 @@ performDataOrdering<-function(dataFile, rowOrderMethod, rowDistanceMeasure, rowA
    dataMatrix = read.table(dataFile, header=TRUE, sep = "\t", check.names = FALSE, row.names = 1, as.is=TRUE, na.strings=c("NA","N/A","-","?"))
    nrows=nrow(dataMatrix)
    ncols=ncol(dataMatrix)
-   if (nrows+ncols>10000) {
-      write("The sum of number of rows and number of columns should be smaller than 10000.",stderr())
+   if (nrows>5000 || ncols>5000) {
+      write("The number of rows and number of columns should be both less than 5000.",stderr())
       quit(status=1)
    }
    rowOrder <-  createOrdering(dataMatrix, rowOrderMethod, "row", rowDistanceMeasure, rowAgglomerationMethod)  
