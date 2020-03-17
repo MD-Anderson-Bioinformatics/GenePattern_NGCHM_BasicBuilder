@@ -191,20 +191,24 @@ for i in "$@"; do
 	then
 		classIter=$((classIter+1))
 		#Parse pipe-delimited 3-part classification bar parameter
-		classJson=$classJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'"'
-		classCat=$(cut -d'|' -f7 <<< $i)
-		classColorType=$(cut -d'_' -f2 <<< $classCat)
-		classJson=$classJson','
-		classJson=$classJson' "position":"'$(cut -d'_' -f1 <<< $classCat)'","color_map": {"type":"'$classColorType'"}}'
-		if [ $classIter -lt $classSize ]		
+		
+		if [[ $(cut -d'|' -f5 <<< $i) != "" ]]
 		then
+			classJson=$classJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'"'
+			classCat=$(cut -d'|' -f7 <<< $i)
+			classColorType=$(cut -d'_' -f2 <<< $classCat)
 			classJson=$classJson','
+			classJson=$classJson' "position":"'$(cut -d'_' -f1 <<< $classCat)'","color_map": {"type":"'$classColorType'"}}'
+			if [ $classIter -lt $classSize ]		
+			then
+				classJson=$classJson','
+			fi
 		fi
+  	
   	fi
 done
 classJson=$classJson']'
 #END: Construct JSON for classification files
-
 
 parmJson=$parmJson$matrixJson$rowConfigJson$colConfigJson$classJson
 parmJson=$parmJson'}'
