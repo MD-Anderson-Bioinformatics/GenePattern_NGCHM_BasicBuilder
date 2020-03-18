@@ -1,5 +1,5 @@
 [{name: "Basic parameters", 
-  parameters: ["Input.filename", "NGCHM.name", "NGCHM.desc","Summary.method","Row.ordering.options","Row.distance.measure","Row.agglomeration.method","gtr.file","Column.ordering.options","Column.distance.measure","Column.agglomeration.method","atr.file","Output.base.name"]},
+  parameters: ["Input.Filename", "Heat.Map.Name", "Heat.Map.Description","Summary.Method","Row.Ordering.Options","Row.Distance.Metric","Row.Agglomeration.Method","gtr.file","Column.Ordering.Options","Column.Distance.Metric","Column.Agglomeration.Method","atr.file","Output.Base.Name"]},
   {name: "Covariates", hidden:true,
-  parameters: ["Row.covariate.name","Row.covariate.input","Row.covariate.type","Column.covariate.name","Column.covariate.input","Column.covariate.type"]}
+  parameters: ["Row.Covariate.Name","Row.Covariate.Input","Row.Covariate.Type","Column.Covariate.Name","Column.Covariate.Input","Column.Covariate.Type"]}
 ]
