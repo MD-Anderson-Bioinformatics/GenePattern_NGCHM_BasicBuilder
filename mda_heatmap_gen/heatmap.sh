@@ -64,8 +64,8 @@ for i in "$@"; do
 	 ctr=$((ctr+1))
 done
 
-echo $existing_atrFile
-echo $existing_gtrFile
+# echo $existing_atrFile
+# echo $existing_gtrFile
 
 
 ctr=0
@@ -99,7 +99,6 @@ for i in "$@"; do
 			outputName="${outputName//\\/_}"
 			outputName="${outputName//\//_}"
 			parmJson=$parmJson' "'$(cut -d'|' -f1 <<< $i)'":"'$outputName'",'
-			echo $tooldata$outputName
 		fi
 		if [ $currParm = "row_configuration" ]
 		then
@@ -212,7 +211,7 @@ classJson=$classJson']'
 
 parmJson=$parmJson$matrixJson$rowConfigJson$colConfigJson$classJson
 parmJson=$parmJson'}'
-# echo "HEATMAP PARAMETERS JSON: "$parmJson	
+echo "HEATMAP PARAMETERS JSON: "$parmJson	
 
 #run R to cluster matrix
 
@@ -222,6 +221,7 @@ then
 	if [ ! -z "$existing_atrFile" ]
 	then
 		# output="$(R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_atrFile $shaidyRepo )"
+		echo $shaidyRepo
 		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $inputMatrix $existing_atrFile $shaidyRepo`
 		if [ `echo "$output" | grep -c "dendrogram"` -gt 0 ]
 		then
@@ -292,7 +292,7 @@ fi
 #call java program to generate NGCHM viewer files.
 java -jar $tooldir/GalaxyMapGen.jar "$parmJson"
 #clean up tempdir
-rm -rf $tdir
+# rm -rf $tdir
 
 find .  -name *.png -exec cp {} . \;
 find . -type d -name $heatmapName -exec rm -r {} +
