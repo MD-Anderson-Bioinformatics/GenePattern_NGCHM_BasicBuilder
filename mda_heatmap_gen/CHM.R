@@ -20,9 +20,9 @@ performDataOrdering<-function(dataFile, rowOrderMethod, rowDistanceMeasure, rowA
    dataMatrix = read.table(dataFile, header=TRUE, sep = "\t", check.names = FALSE, row.names = 1, as.is=TRUE, na.strings=c("NA","N/A","-","?"))
    nrows=nrow(dataMatrix)
    ncols=ncol(dataMatrix)
-   if (nrows>5000 || ncols>5000) {
-      write("The number of rows and number of columns should be both less than 5000.",stderr())
-      quit(status=1)
+   if (nrows+ncols>10000) {
+      write("If the sum of number of rows and number of columns greater than 10000, it might exceed the memory limit in R dist calculation.",stderr())
+      # quit(status=1)
    }
    rowOrder <-  createOrdering(dataMatrix, rowOrderMethod, "row", rowDistanceMeasure, rowAgglomerationMethod)  
    if (rowOrderMethod == "Hierarchical") {
