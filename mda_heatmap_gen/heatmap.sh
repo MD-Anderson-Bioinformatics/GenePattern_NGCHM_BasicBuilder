@@ -117,10 +117,11 @@ for i in "$@"; do
 			then
 				rowOrder="Original"
 				rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"From .gtr","'$(cut -d'|' -f6 <<< $i)'":"From .gtr",'$dataTypeJson'},'
-				rowConfigJson=${rowConfigJson/Original/Hierarchical}
+				# rowConfigJson=${rowConfigJson/Original/Hierarchical}
 			else
 				rowConfigJson=$rowConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
 	  		fi
+	  		# echo $rowConfigJson
 		fi
 		if [ $currParm = "col_configuration" ]
 		then
@@ -138,10 +139,11 @@ for i in "$@"; do
 			then
 				colOrder="Original"
 				colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"From .atr","'$(cut -d'|' -f6 <<< $i)'":"From .atr",'$dataTypeJson'},'
-				colConfigJson=${colConfigJson/Original/Hierarchical}
+				# colConfigJson=${colConfigJson/Original/Hierarchical}
 			else
 				colConfigJson=$colConfigJson'"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'","'$(cut -d'|' -f6 <<< $i)'":"'$(cut -d'|' -f7 <<< $i)'",'$dataTypeJson'},'
 	  		fi
+	  		# echo $colConfigJson
 		fi
 	 fi
 	 ctr=$((ctr+1))
@@ -211,7 +213,7 @@ classJson=$classJson']'
 
 parmJson=$parmJson$matrixJson$rowConfigJson$colConfigJson$classJson
 parmJson=$parmJson'}'
-echo "HEATMAP PARAMETERS JSON: "$parmJson	
+# echo "HEATMAP PARAMETERS JSON: "$parmJson	
 
 #run R to cluster matrix
 
@@ -221,7 +223,6 @@ then
 	if [ ! -z "$existing_atrFile" ]
 	then
 		# output="$(R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_atrFile $shaidyRepo )"
-		echo $shaidyRepo
 		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $inputMatrix $existing_atrFile $shaidyRepo`
 		if [ `echo "$output" | grep -c "dendrogram"` -gt 0 ]
 		then
@@ -271,12 +272,12 @@ else
 	then
 		inputMatrix=$matrixFile
 	fi
-	echo $rowOrder' '$rowDistance' '$rowAgglomeration' '$colOrder' '$colDistance' '$colAgglomeration' '$rowOrderFile' '$colOrderFile' '$rowDendroFile' '$colDendroFile' '$rowCuts' '$colCuts' '$rowLabels' '$colLabels
+	echo $inputMatrix' '$rowOrder' '$rowDistance' '$rowAgglomeration' '$colOrder' '$colDistance' '$colAgglomeration' '$rowOrderFile' '$colOrderFile' '$rowDendroFile' '$colDendroFile' '$rowCuts' '$colCuts' '$rowLabels' '$colLabels
 	output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
 	rc=$?;
 	if [ $rc != 0 ]
 	then
-	echo $output;
+	echo $output
 	if [ `echo "$output" | grep -c "Inf in foreign function call"` -gt 0 ]
 	then
 		echo "";

@@ -38,14 +38,14 @@ get_rowOrder<-function(data,firstColumn){
 	}
 
 }
-# source("/home/mda_heatmap_gen/xcluster2r.R")
-source("../mda_heatmap_gen/xcluster2r.R")
+source("/home/mda_heatmap_gen/xcluster2r.R")
+# source("../mda_heatmap_gen/xcluster2r.R")
 options(warn=-1)
 args = commandArgs(trailingOnly=TRUE)
 cdtFilePath = args [1]
 filePath = args[2]
 shaidyDir = args[3]
-print(shaidyDir)
+# print(shaidyDir)
 result="empty"
 if (filePath!="empty"){
     result=xcluster2r(filePath,distance='euclidean',fast=TRUE)
@@ -53,6 +53,7 @@ if (filePath!="empty"){
 tsvFilePath=paste(shaidyDir,"/matrix.tsv",sep="")
 data=read.csv(cdtFilePath,sep="\t",header=TRUE)
 firstColumn=match(c("NA"),data[1,])+1
+firstRow=tail(which(is.na(data[,3])),n=1)+1
 colOrder=get_colOrder(data,firstColumn)
 rowOrder=get_rowOrder(data,firstColumn)
 
@@ -64,12 +65,17 @@ if (endsWith(basename(filePath),"gtr")){
     result$labels=rowOrder
 }
 
-data=data[3:nrow(data),]
-rownames=data[,2]   
+if ("GID" %in% colnames(data)){
+	data=data[3:nrow(data),]
+	rownames=data[,2]
+}else{
+	data=data[firstRow:nrow(data),]
+	rownames=data[,1]
+}
+
 data=data[,firstColumn:ncol(data)]
 row.names(data)<-rownames
 data=data[rowOrder,colOrder]
-
 if (result!="empty"){
     ddg <- stats::as.dendrogram(result)
     if(!file.exists(shaidyDir)){
