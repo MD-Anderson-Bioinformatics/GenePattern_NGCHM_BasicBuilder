@@ -2,8 +2,8 @@
 A GenePattern module to build Next-Generation Clustered Heat Map in GenePattern notebook
 
 ## Use Next.Generation.Clustered.Heat.Map.Builder with GenePattern Notebook 
-1. Click on "Tools" to insert a GenePattern Login Cell.
-2. Log in. 
+1. Type "jupyter notebook" to start, create a new python notebook by clicking on "New" on the right of screen, then select "Python 3".
+2. Click on "Tools" to insert a GenePattern Login Cell, then Log in. 
 3. Click on "Tools", scroll to find Next.Generation.Clustered.Heat.Map.Builder module, then insert.
 4. Upload matrix file. 
 [SampleMatrix](https://raw.githubusercontent.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/master/test_data/400x400.txt)
