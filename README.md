@@ -6,7 +6,7 @@ A GenePattern module to build Next-Generation Clustered Heat Map in GenePattern 
 2. Click on "Tools" to insert a GenePattern Login Cell, then Log in. 
 3. Click on "Tools", scroll to find Next.Generation.Clustered.Heat.Map.Builder module, then insert.
 4. Upload matrix file at "Input Filename" field. 
-[SampleMatrix](https://raw.githubusercontent.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/master/test_data/400x400.txt)
+[SampleMatrix](https://raw.githubusercontent.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/master/test_data/400x400.tsv)
 5. Upload covariate files if available by expanding "Covariates" at the bottom of the cell. 
 [Sample Row Covariate](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/blob/master/test_data/400x400-row-covariate.txt)
 [Sample Column Covariate](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/blob/master/test_data/400x400-row-covariate.txt)
