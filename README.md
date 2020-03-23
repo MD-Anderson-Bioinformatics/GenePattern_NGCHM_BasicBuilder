@@ -5,18 +5,14 @@ A GenePattern module to build Next-Generation Clustered Heat Map in GenePattern 
 1. Type "jupyter notebook" to start, create a new python notebook by clicking on "New" on the right of screen, then select "Python 3".
 2. Click on "Tools" to insert a GenePattern Login Cell, then Log in. 
 3. Click on "Tools", scroll to find Next.Generation.Clustered.Heat.Map.Builder module, then insert.
-4. Upload matrix file. 
+4. Upload matrix file at "Input Filename" field. 
 [SampleMatrix](https://raw.githubusercontent.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/master/test_data/400x400.txt)
-5. Upload covariate files if available. 
+5. Upload covariate files if available by expanding "Covariates" at the bottom of the cell. 
 [Sample Row Covariate](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/blob/master/test_data/400x400-row-covariate.txt)
 [Sample Column Covariate](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/blob/master/test_data/400x400-row-covariate.txt)
 6. Make other adjustment or use default setting.
 7. Click on Run.
 8. Use [Next.Generation.Clustered.Heat.Map.Viewer](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_Viewer) to view the generated ngchm file. Drag ngchm file to the input field of Next.Generation.Clustered.Heat.Map.Viewer module.
-
-
-![ScreenShot](https://github.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/blob/master/ScreenShotOfBuilder.png)
-
 
 
 
