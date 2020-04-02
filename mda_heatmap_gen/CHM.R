@@ -21,7 +21,7 @@ performDataOrdering<-function(dataFile, rowOrderMethod, rowDistanceMeasure, rowA
    nrows=nrow(dataMatrix)
    ncols=ncol(dataMatrix)
    if (nrows+ncols>10000) {
-      write("If the sum of number of rows and number of columns greater than 10000, it might exceed the memory limit in R dist calculation.",stderr())
+      write("If the sum of number of rows and number of columns greater than 10000, it might exceed the memory limit in R dist calculation. Please adjust the --max-mem-size flag in R options in Programming Language Options at the GenePattern Server side if you need more memory in R. Check detail at https://www.genepattern.org/administrators-guide.",stderr())
       # quit(status=1)
    }
    rowOrder <-  createOrdering(dataMatrix, rowOrderMethod, "row", rowDistanceMeasure, rowAgglomerationMethod)  
@@ -83,7 +83,7 @@ createOrdering<-function(matrixData, orderMethod, direction, distanceMeasure, ag
     # Compute dendrogram for "Distance Metric"
     distVals <- NULL
     if(direction=="row") {
-      print(distanceMeasure)
+      # print(distanceMeasure)
       if (distanceMeasure == "correlation") {
         geneGeneCor <- cor(t(matrixData), use="pairwise")
         distVals <- as.dist((1-geneGeneCor)/2)

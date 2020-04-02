@@ -22,25 +22,25 @@ NG-CHMs include the following interactive capabilities (among many others):
 
 Name | Description
 ------------ | -------------
-input filename | input file type .tsv,.gct,.cdt<br>* .tsv: tab-deliminated matrix file<br>* .gct: tab-deliminated matrix file with additional information<br>* .cdt: reordered matrix file
-NGCHM name | Name of NGCHM
-NGCHM desc | Brief description of the data
-summary method | Average, Mode, Sample
-row ordering options | Hierarchical(default), Original, Random
-row distance measure | manhattan, euclidean(default), maximum, minkowski, correlation (Optional, required if row order method is Hierarchical)
-row agglomeration method | average, complete, single, ward.D(default), mcquitty (Optional, required if row order method is Hierarchical)
+input Filename | input file type .tsv,.gct,.cdt<br>* .tsv: tab-deliminated matrix file<br>* .gct: tab-deliminated matrix file with additional information<br>* .cdt: reordered matrix file
+Heat Map Name | Name of Heat map. If omitted, input Filename will be used.
+Heat Map Description | Brief description of the data
+Summary Method | Average, Mode, Sample
+Row Ordering Options | Hierarchical(default), Original, Random
+Row Distance Metric | manhattan, euclidean(default), maximum, minkowski, correlation (Optional, required if row order method is Hierarchical)
+Row Agglomeration Method | average, complete, single, ward.D(default), mcquitty (Optional, required if row order method is Hierarchical)
 gtr file | Gene tree file, records the order in which rows were joined.<br>If gtr file is provided, then cdt file is required. (Optional, if you have gtr and cdt file generated from [Hierarchical cluster module](https://www.genepattern.org/modules/docs/HierarchicalClustering/8) or other tools, you could upload files and convert them into ngchm.)
-column ordering options | Hierarchical(default), Original, Random
-column distance measure | manhattan, euclidean(default), maximum, minkowski, correlation (Optional, required if column order method is Hierarchical)
-column agglomeration method | average, complete, single, ward.D(default), mcquitty (Optional, required if column order method is Hierarchical)
+Column Ordering Options | Hierarchical(default), Original, Random
+Column Distance Metric | manhattan, euclidean(default), maximum, minkowski, correlation (Optional, required if column order method is Hierarchical)
+Column Agglomeration Method | average, complete, single, ward.D(default), mcquitty (Optional, required if column order method is Hierarchical)
 atr file | Array tree file, records the order in which columns were joined.<br>If atr file is provided, then cdt file is required. (Optional, if you have atr and cdt file generated from [Hierarchical cluster module](https://www.genepattern.org/modules/docs/HierarchicalClustering/8) or other tools, you could upload files and convert them into ngchm.)
-row covariate name | Name of the row covariate.(Optional)
-row covariate input | tsv file with row label and covariate value on each line.(Optional)
-row covariate type | discrete, continuous (Optional)
-column covariate name | Name of the column covariate.(Optional)
-column covariate input | tsv file with column label and covariate value on each line.(Optional)
-column covariate type | discrete, continuous (Optional)
-output base name | Name of output ngchm file.
+Row Covariate Name | Name of the row covariate.(Optional)
+Row Covariate Input | tsv file with row label and covariate value on each line.(Optional)
+Row Covariate Type | discrete, continuous (Optional)
+Column Covariate Name | Name of the column covariate.(Optional)
+Column Covariate Input | tsv file with column label and covariate value on each line.(Optional)
+Column Covariate Type | discrete, continuous (Optional)
+Output Base Name | Name of output ngchm file, if omitted, input Filename will be used.
 
 
 ## Output
