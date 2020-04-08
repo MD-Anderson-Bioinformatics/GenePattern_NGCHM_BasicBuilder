@@ -3,6 +3,22 @@
 #echo " 13: "${13}" 14: "${14}" 15: "${15}" 16: "${16} "17: "${17}" 18: "${18}" 19: "${19}" 20: "${20}" 21: "${21} " 22: "${22}" 23:" ${23} 
 
 #Count total number of parameters and classification parameters
+isAlphaNumeric(){
+	name=$1
+    for (( i=0; i<${#name}; i++ )); do
+	  charCode=`printf "%d" "'${name:$i:1}"`
+  	  if (( ! ( $charCode > 47 && $charCode < 58 ) )) && (( $charCode != 32 )) && (( $charCode != 45 )) && (( $charCode != 46 )) && (( $charCode != 95 )) && (( ! ( $charCode > 64 && $charCode < 91 ) )) && (( ! ( $charCode > 96 && $charCode < 123 ) )) 
+	  then
+	        echo "Heat Map Name and Output Name cannot contain non-alphanumeric characters (Exceptions: space, hyphen, and underscore)" 1>&2
+	        exit 1
+	  fi
+	done
+}
+
+
+
+
+
 parmSize=0
 classSize=0
 matrixSize=0
@@ -33,9 +49,9 @@ rowOrderJson='"order_file": "'$rowOrderFile'",'
 rowDendroJson='"dendro_file": "'$rowDendroFile'",'
 colOrderJson='"order_file": "'$colOrderFile'",'
 colDendroJson='"dendro_file": "'$colDendroFile'",'
-
+platformJson='"build_platform": "GenePattern",'
 #BEGIN: Construct JSON for all non-repeating parameters
-parmJson='{'
+parmJson='{'$platformJson
 rowConfigJson='"row_configuration": {'
 colConfigJson='"col_configuration": {'
 
@@ -68,6 +84,9 @@ done
 # echo $existing_gtrFile
 
 
+
+
+
 ctr=0
 for i in "$@"; do
 	if [ $ctr -gt 1 ]
@@ -88,17 +107,24 @@ for i in "$@"; do
 		if [ $currParm = "chm_name" ]
 		then
 			heatmapName=$(cut -d'|' -f2 <<< $i)
+			isAlphaNumeric "$heatmapName"
 			heatmapName="${heatmapName//\\/_}"
 			heatmapName="${heatmapName//\//_}"
-			parmJson=$parmJson' "'$(cut -d'|' -f1 <<< $i)'":"'$heatmapName'",'
+			parmJson=$parmJson' "chm_name":"'$heatmapName'",'
 		fi
 		if [ $currParm = "output_location" ]
 		then
 			output_location=$(cut -d'|' -f2 <<< $i)
 			outputName="${output_location/$tooldata/}"
+			isAlphaNumeric "$outputName"
+			
+			if [[ "$outputName" != *ngchm ]]
+			then
+				outputName=$outputName".ngchm"
+			fi
 			outputName="${outputName//\\/_}"
 			outputName="${outputName//\//_}"
-			parmJson=$parmJson' "'$(cut -d'|' -f1 <<< $i)'":"'$outputName'",'
+			parmJson=$parmJson' "output_location":"'$outputName'",'
 		fi
 		if [ $currParm = "row_configuration" ]
 		then
@@ -195,6 +221,7 @@ for i in "$@"; do
 		
 		if [[ $(cut -d'|' -f5 <<< $i) != "" ]]
 		then
+			# isAlphaNumeric "$(cut -d'|' -f3 <<< $i)"
 			classJson=$classJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'"'
 			classCat=$(cut -d'|' -f7 <<< $i)
 			classColorType=$(cut -d'_' -f2 <<< $classCat)
@@ -213,7 +240,7 @@ classJson=$classJson']'
 
 parmJson=$parmJson$matrixJson$rowConfigJson$colConfigJson$classJson
 parmJson=$parmJson'}'
-# echo "HEATMAP PARAMETERS JSON: "$parmJson	
+echo "HEATMAP PARAMETERS JSON: "$parmJson	
 
 #run R to cluster matrix
 
@@ -258,7 +285,7 @@ fi
 
 if [[ "$inputMatrix" != *cdt ]] && { [ ! -z "$existing_atrFile" ] || [ ! -z "$existing_gtrFile" ]; };
 then
-	echo ".cdt file is required if .atr or .gtr is provided."
+	echo ".cdt file is required if .atr or .gtr is provided." 1>&2
 	exit 1
 fi
 
@@ -272,12 +299,12 @@ else
 	then
 		inputMatrix=$matrixFile
 	fi
-	echo $inputMatrix' '$rowOrder' '$rowDistance' '$rowAgglomeration' '$colOrder' '$colDistance' '$colAgglomeration' '$rowOrderFile' '$colOrderFile' '$rowDendroFile' '$colDendroFile' '$rowCuts' '$colCuts' '$rowLabels' '$colLabels
+	#echo $inputMatrix' '$rowOrder' '$rowDistance' '$rowAgglomeration' '$colOrder' '$colDistance' '$colAgglomeration' '$rowOrderFile' '$colOrderFile' '$rowDendroFile' '$colDendroFile' '$rowCuts' '$colCuts' '$rowLabels' '$colLabels
 	output="$(R --slave --vanilla --file=$tooldir/CHM.R --args $inputMatrix $rowOrder $rowDistance $rowAgglomeration $colOrder $colDistance $colAgglomeration $rowOrderFile $colOrderFile $rowDendroFile $colDendroFile $rowCuts $colCuts $rowLabels $colLabels 2>&1)"
 	rc=$?;
 	if [ $rc != 0 ]
 	then
-	echo $output
+	echo $output 1>&2
 	if [ `echo "$output" | grep -c "Inf in foreign function call"` -gt 0 ]
 	then
 		echo "";
@@ -293,8 +320,9 @@ fi
 #call java program to generate NGCHM viewer files.
 java -jar $tooldir/GalaxyMapGen.jar "$parmJson"
 #clean up tempdir
-# rm -rf $tdir
+rm -rf $tdir
 
 find .  -name *.png -exec cp {} . \;
+heatmapName="${heatmapName// /_}"
 find . -type d -name $heatmapName -exec rm -r {} +
 find . -type d -empty -delete
