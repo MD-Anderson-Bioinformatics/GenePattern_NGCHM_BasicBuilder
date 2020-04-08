@@ -132,7 +132,7 @@ p18_value=column_discrete\=Column Categorical;column_continuous\=Column Continuo
 p19_MODE=
 p19_TYPE=TEXT
 p19_default_value=<Input.Filename_basename>.ngchm
-p19_description=Output ngchm file name, if omitted, input.Filename will be used.
+p19_description=Output ngchm file name, if omitted, input.Filename will be used, view with Next.Gen.Clustered.Heat.Map.Viewer..
 p19_fileFormat=
 p19_flag=
 p19_name=Output.Base.Name
