@@ -240,7 +240,7 @@ classJson=$classJson']'
 
 parmJson=$parmJson$matrixJson$rowConfigJson$colConfigJson$classJson
 parmJson=$parmJson'}'
-echo "HEATMAP PARAMETERS JSON: "$parmJson	
+# echo "HEATMAP PARAMETERS JSON: "$parmJson	
 
 #run R to cluster matrix
 
