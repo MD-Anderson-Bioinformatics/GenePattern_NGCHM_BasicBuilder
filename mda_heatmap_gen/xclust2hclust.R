@@ -5,7 +5,7 @@ library(NGCHM)
 #shaidyDir="/Users/jma7/.genepattern/jobResults/484/shaidy"
 
 get_colOrder<-function(data,firstColumn){
-	rownames=rownames(data)
+	rownames=data[,1]
 	if ("AID" %in% rownames){
 		colLabel=data[0:1,]
 		colLabel=colLabel[,firstColumn:ncol(data)]
@@ -22,18 +22,20 @@ get_colOrder<-function(data,firstColumn){
 	}
 }
 
-get_rowOrder<-function(data,firstColumn){
-	header=colnames(data)
+get_rowOrder<-function(data,firstRow){
+	header=colnames(data)	
+
 	if ("GID" %in% header){
-		rowLabel=data[3:nrow(data),0:2]
+		rowLabel=data[firstRow:nrow(data),0:2]
 		rowLabel=as.data.frame(rowLabel)
+		colnames(rowLabel)=c("GID","ID")
 		rowLabel$GID=gsub("GENE","",rowLabel$GID)
 		rowLabel$GID=gsub("X","",rowLabel$GID)
 		rowLabel$GID=as.numeric(rowLabel$GID)
 		rowLabel=rowLabel[order(rowLabel$GID),]
 		return (as.vector(rowLabel[,2]))
 	}else{
-		rowLabel=data[3:nrow(data),0:1]
+		rowLabel=data[firstRow:nrow(data),0:1]
 		return (as.vector(rowLabel))
 	}
 
@@ -51,12 +53,13 @@ if (filePath!="empty"){
     result=xcluster2r(filePath,distance='euclidean',fast=TRUE)
 }
 tsvFilePath=paste(shaidyDir,"/matrix.tsv",sep="")
-data=read.csv(cdtFilePath,sep="\t",header=TRUE)
-firstColumn=match(c("NA"),data[1,])+1
-firstRow=tail(which(is.na(data[,3])),n=1)+1
+data=read.csv(cdtFilePath,sep="\t",header=TRUE,check.names=FALSE)
+# firstColumn=match(c("NA"),data[1,])+1
+# firstRow=tail(which(is.na(data[,3])),n=1)+1
+firstColumn=match(c("GWEIGHT"),colnames(data))+1
+firstRow=match(c("EWEIGHT"),data[,1])+1
 colOrder=get_colOrder(data,firstColumn)
-rowOrder=get_rowOrder(data,firstColumn)
-
+rowOrder=get_rowOrder(data,firstRow)
 
 if (endsWith(basename(filePath),"atr")){
     result$labels=colOrder
@@ -65,15 +68,15 @@ if (endsWith(basename(filePath),"gtr")){
     result$labels=rowOrder
 }
 
-if ("GID" %in% colnames(data)){
-	data=data[3:nrow(data),]
+data=data[firstRow:nrow(data),]
+if ("GID" %in% colnames(data)){	
 	rownames=data[,2]
 }else{
-	data=data[firstRow:nrow(data),]
 	rownames=data[,1]
 }
 
 data=data[,firstColumn:ncol(data)]
+
 row.names(data)<-rownames
 data=data[rowOrder,colOrder]
 if (result!="empty"){
@@ -86,7 +89,6 @@ if (result!="empty"){
 }else{
     dir.create(file.path(shaidyDir), showWarnings = FALSE)
 }
-
 if(!file.exists(tsvFilePath)){
     write.table(data,tsvFilePath,quote=FALSE,sep="\t",col.names = NA)
 }

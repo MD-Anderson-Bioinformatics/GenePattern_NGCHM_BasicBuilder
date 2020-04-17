@@ -77,7 +77,7 @@ if(substr(distance,1,1)=="e")
     # median_number=median(data[,4])
     # factor=1/median_number
     # Hheight <- 2 / (data[,4]*factor+0.1)   #Distance = Euclidean 
-    Hheight <- 1 / data[,4]
+    Hheight <- 1 / (data[,4]+0.01)
     Hheight <- Hheight-min(Hheight)+0.1
    }
    else{
