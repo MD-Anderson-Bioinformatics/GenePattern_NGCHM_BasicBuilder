@@ -5,16 +5,40 @@
 #Count total number of parameters and classification parameters
 isAlphaNumeric(){
 	name=$1
+	if (( ${#name} > 40 ))
+	then
+		echo "Heat Map Name , Output Name and Covariate Name should be less or equal to 40 characters." 1>&2
+		exit 1
+	fi
     for (( i=0; i<${#name}; i++ )); do
 	  charCode=`printf "%d" "'${name:$i:1}"`
   	  if (( ! ( $charCode > 47 && $charCode < 58 ) )) && (( $charCode != 32 )) && (( $charCode != 45 )) && (( $charCode != 46 )) && (( $charCode != 95 )) && (( ! ( $charCode > 64 && $charCode < 91 ) )) && (( ! ( $charCode > 96 && $charCode < 123 ) )) 
 	  then
-	        echo "Heat Map Name and Output Name cannot contain non-alphanumeric characters (Exceptions: space, hyphen, and underscore)" 1>&2
+	        echo "Heat Map Name, Output Name and Covariate name cannot contain non-alphanumeric characters (Exceptions: space, hyphen, dot and underscore)" 1>&2
 	        exit 1
 	  fi
 	done
 }
 
+isAlphaNumeric_desp(){
+	name=$1
+	
+
+	if (( ${#name} > 1000 ))
+	then
+		echo "Heat Map Description should be less or equal to 1000 characters." 1>&2
+		exit 1
+	fi
+	for (( i=0; i<${#name}; i++ )); do
+	  charCode=`printf "%d" "'${name:$i:1}"`
+  	  if (( ! ( $charCode > 47 && $charCode < 58 ) )) && (( $charCode != 32 )) && (( $charCode != 45 )) && (( $charCode != 46 )) && (( $charCode != 95 )) && (( ! ( $charCode > 64 && $charCode < 91 ) )) && (( ! ( $charCode > 96 && $charCode < 123 ) )) 
+	  then
+	        echo "Heat Map description cannot contain non-alphanumeric characters (Exceptions: space, hyphen, dot and underscore)" 1>&2
+	        exit 1
+	  fi
+	done
+	
+}
 
 
 
@@ -92,7 +116,7 @@ for i in "$@"; do
 	if [ $ctr -gt 1 ]
 	then
 		currParm=$(cut -d'|' -f1 <<< $i)
-		if [ $currParm != "chm_name" ] && [ $currParm != "output_location" ] && [ $currParm != "matrix_files" ] && [ $currParm != "row_configuration" ] && [ $currParm != "col_configuration" ] && [ $currParm != "classification" ]
+		if [ $currParm != "chm_name" ] && [ $currParm != "output_location" ] && [ $currParm != "matrix_files" ] && [ $currParm != "row_configuration" ] && [ $currParm != "col_configuration" ] && [ $currParm != "classification" ] && [ $currParm != "chm_description" ]
 		then
 			#Parse pipe-delimited parameter parameter
 			parmJson=$parmJson' "'$(cut -d'|' -f1 <<< $i)'":"'$(cut -d'|' -f2 <<< $i)'",'
@@ -107,17 +131,30 @@ for i in "$@"; do
 		if [ $currParm = "chm_name" ]
 		then
 			heatmapName=$(cut -d'|' -f2 <<< $i)
+			heatmapName="$(echo -e "${heatmapName}" | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//')"
+
 			isAlphaNumeric "$heatmapName"
 			heatmapName="${heatmapName//\\/_}"
 			heatmapName="${heatmapName//\//_}"
 			parmJson=$parmJson' "chm_name":"'$heatmapName'",'
 		fi
+		if [ $currParm = "chm_description" ]
+		then
+			heatmapDescription=$(cut -d'|' -f2 <<< $i)
+			heatmapDescription="$(echo -e "${heatmapDescription}" | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' -e "s/\"/'/g")"
+			isAlphaNumeric_desp "$heatmapDescription"
+			parmJson=$parmJson' "chm_description":"'$heatmapDescription'",'
+		fi
+
+
+
 		if [ $currParm = "output_location" ]
 		then
 			output_location=$(cut -d'|' -f2 <<< $i)
 			outputName="${output_location/$tooldata/}"
+			outputName="$(echo -e "${outputName}" | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//')"
+			outputName="$(echo -e "${outputName}" | sed -e 's/[[:blank:]]/_/')"
 			isAlphaNumeric "$outputName"
-			
 			if [[ "$outputName" != *ngchm ]]
 			then
 				outputName=$outputName".ngchm"
@@ -218,15 +255,17 @@ for i in "$@"; do
 	then
 		classIter=$((classIter+1))
 		#Parse pipe-delimited 3-part classification bar parameter
-		
 		if [[ $(cut -d'|' -f5 <<< $i) != "" ]]
 		then
-			# isAlphaNumeric "$(cut -d'|' -f3 <<< $i)"
-			classJson=$classJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$(cut -d'|' -f3 <<< $i)'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'"'
+			classJson=$classJson' {"'$(cut -d'|' -f2 <<< $i)'":"'$(echo -e "$(cut -d'|' -f3 <<< $i)" | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//')'","'$(cut -d'|' -f4 <<< $i)'":"'$(cut -d'|' -f5 <<< $i)'"'
 			classCat=$(cut -d'|' -f7 <<< $i)
 			classColorType=$(cut -d'_' -f2 <<< $classCat)
 			classJson=$classJson','
 			classJson=$classJson' "position":"'$(cut -d'_' -f1 <<< $classCat)'","color_map": {"type":"'$classColorType'"}}'
+			
+			covName=$(cut -d'|' -f3 <<< $i)
+			isAlphaNumeric "$covName"
+
 			if [ $classIter -lt $classSize ]		
 			then
 				classJson=$classJson','
