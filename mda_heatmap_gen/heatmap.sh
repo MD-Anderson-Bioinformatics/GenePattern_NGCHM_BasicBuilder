@@ -285,9 +285,19 @@ parmJson=$parmJson'}'
 
 if [[ "$inputMatrix" == *cdt ]]
 then
+	numcolsMatrix="$(head -n 1 "${inputMatrix}" | awk -F'\t' '{print NF}')"
+	numrowsMatrix="$(wc -l < "${inputMatrix}")"
+
 	shaidyRepo=$tdir/shaidy
 	if [ ! -z "$existing_atrFile" ]
 	then
+		numcolsatrFile="$(wc -l < "${existing_atrFile}")"
+		if (( $numcolsMatrix-$numcolsatrFile>5 || $numcolsMatrix-$numcolsatrFile<-5))
+		then
+			echo "The atr file is not matching with cdt file."  1>&2
+			exit 1
+		fi
+
 		# output="$(R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_atrFile $shaidyRepo )"
 		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $inputMatrix $existing_atrFile $shaidyRepo`
 		if [ `echo "$output" | grep -c "dendrogram"` -gt 0 ]
@@ -302,6 +312,12 @@ then
 	fi
 	if [ ! -z "$existing_gtrFile" ]
 	then
+		numrowsgtrFile="$(wc -l < "${existing_gtrFile}")"
+		if (( $numrowsMatrix-$numrowsgtrFile>5 || $numrowsMatrix-$numrowsgtrFile<-5 ))
+		then
+			echo "The gtr file is not matching with cdt file."  1>&2
+			exit 1
+		fi
 		# output="$(R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $existing_atrFile $shaidyRepo )"
 		output=`R --slave --vanilla --file=$tooldir/xclust2hclust.R --args $inputMatrix $existing_gtrFile $shaidyRepo`
 		if [ `echo "$output" | grep -c "dendrogram"` -gt 0 ]
