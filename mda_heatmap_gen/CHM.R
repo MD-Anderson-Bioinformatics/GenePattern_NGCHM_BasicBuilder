@@ -21,7 +21,7 @@ performDataOrdering<-function(dataFile, rowOrderMethod, rowDistanceMeasure, rowA
    nrows=nrow(dataMatrix)
    ncols=ncol(dataMatrix)
    if (nrows+ncols>10000) {
-      write("If the dimension of matrix is large in one direction or both directions, the R dist calculation will use large amount of memory which could cause job to fail. To increase memory allocation, please check https://www.genepattern.org/administrators-guide#increasing-memory-allocation and https://www.genepattern.org/administrators-guide#_Programming_Languages .",stderr())
+      write("If the dimension of your matrix is large in one direction or both directions, the job might fail due to server capacity. To increase memory allocation, please see https://www.genepattern.org/administrators-guide#increasing-memory-allocation and https://www.genepattern.org/administrators-guide#_Programming_Languages .",stderr())
       # quit(status=1)
    }
    rowOrder <-  createOrdering(dataMatrix, rowOrderMethod, "row", rowDistanceMeasure, rowAgglomerationMethod)  
