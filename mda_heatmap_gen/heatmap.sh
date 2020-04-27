@@ -5,9 +5,9 @@
 #Count total number of parameters and classification parameters
 isAlphaNumeric(){
 	name=$1
-	if (( ${#name} > 40 ))
+	if (( ${#name} > 40 )) || (( ${#name} == 0 )) 
 	then
-		echo "Heat Map Name , Output Name and Covariate Name should be less or equal to 40 characters." 1>&2
+		echo "Heat Map Name , Output Name and Covariate Name should be less or equal to 40 characters and not empty." 1>&2
 		exit 1
 	fi
     for (( i=0; i<${#name}; i++ )); do
