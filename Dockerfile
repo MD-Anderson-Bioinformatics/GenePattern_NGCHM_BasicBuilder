@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y r-base vim
 
 WORKDIR /home/
 
-COPY ./Requirments.R /home/
+COPY ./Requirements.R /home/
 RUN Rscript Requirments.R
 
 ADD ./mda_heatmap_gen/* /home/mda_heatmap_gen/
