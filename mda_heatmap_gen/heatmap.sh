@@ -7,7 +7,7 @@ isAlphaNumeric(){
 	name=$1
 	if (( ${#name} > 40 )) || (( ${#name} == 0 )) 
 	then
-		echo "Heat Map Name , Output Name and Covariate Name should be less or equal to 40 characters and not empty." 1>&2
+		echo "Heat Map Name, Output Name and Covariate Name should be less or equal to 40 characters and not empty." 1>&2
 		exit 1
 	fi
     for (( i=0; i<${#name}; i++ )); do
@@ -132,7 +132,7 @@ for i in "$@"; do
 		then
 			heatmapName=$(cut -d'|' -f2 <<< $i)
 			heatmapName="$(echo -e "${heatmapName}" | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//')"
-
+			heatmapName="$(echo -e "${heatmapName}" | sed -e 's/ \+/_/g')"
 			isAlphaNumeric "$heatmapName"
 			heatmapName="${heatmapName//\\/_}"
 			heatmapName="${heatmapName//\//_}"
@@ -153,7 +153,7 @@ for i in "$@"; do
 			output_location=$(cut -d'|' -f2 <<< $i)
 			outputName="${output_location/$tooldata/}"
 			outputName="$(echo -e "${outputName}" | sed -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//')"
-			outputName="$(echo -e "${outputName}" | sed -e 's/[[:blank:]]/_/')"
+			outputName="$(echo -e "${outputName}" | sed -e 's/ \+/_/g')"
 			isAlphaNumeric "$outputName"
 			if [[ "$outputName" != *ngchm ]]
 			then
@@ -373,7 +373,15 @@ fi
 
 
 #call java program to generate NGCHM viewer files.
-java -jar $tooldir/GalaxyMapGen.jar "$parmJson"
+# java -Xmx2m -jar $tooldir/GalaxyMapGen.jar "$parmJson"
+output="$(java -jar $tooldir/GalaxyMapGen.jar "$parmJson"  2>&1)"
+rc=$?;
+if [ $rc != 0 ]
+then
+echo "If the dimension of your matrix is large in one direction or both directions, the job might fail due to server capacity. To increase memory allocation, please see https://www.genepattern.org/administrators-guide#increasing-memory-allocation and https://www.genepattern.org/administrators-guide#_Programming_Languages." 1>&2
+#echo $output 1>&2
+exit $rc;
+fi
 #clean up tempdir
 rm -rf $tdir
 
