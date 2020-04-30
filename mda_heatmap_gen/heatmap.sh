@@ -378,7 +378,7 @@ output="$(java -jar $tooldir/GalaxyMapGen.jar "$parmJson"  2>&1)"
 rc=$?;
 if [ $rc != 0 ]
 then
-echo "If the dimension of your matrix is large in one direction or both directions, the job might fail due to server capacity.  This could cause out of memory errors in R or Java processes. Contact your server administrator if an out of memory condition occurs or reduce the size of your matrix." 1>&2
+echo "If the dimension of your matrix is large in one direction or both directions, the job might fail due to server capacity.  This could cause out of memory errors in R or Java processes. If an out of memory error occurs contact your server administrator or else reduce the size of your matrix." 1>&2
 #echo $output 1>&2
 exit $rc;
 fi
