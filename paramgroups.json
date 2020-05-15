@@ -1,5 +1,5 @@
 [{name: "Basic parameters", 
-  parameters: ["Input.Filename", "Heat.Map.Name", "Heat.Map.Description","Summary.Method","Row.Ordering.Options","Row.Distance.Metric","Row.Agglomeration.Method","gtr.File","Column.Ordering.Options","Column.Distance.Metric","Column.Agglomeration.Method","atr.File","Output.Base.Name"]},
+  parameters: ["Input.Filename", "Heat.Map.Name", "Heat.Map.Description","Summary.Method","Row.Ordering.Options","Row.Distance.Metric","Row.Agglomeration.Method","Row.Label.Type","gtr.File","Column.Ordering.Options","Column.Distance.Metric","Column.Agglomeration.Method","Column.Label.Type","atr.File","Output.Base.Name"]},
   {name: "Covariates", hidden:true,
   parameters: ["Row.Covariate.Name","Row.Covariate.Input","Row.Covariate.Type","Column.Covariate.Name","Column.Covariate.Input","Column.Covariate.Type"]}
 ]
