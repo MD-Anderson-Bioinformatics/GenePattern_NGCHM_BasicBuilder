@@ -8,7 +8,7 @@ commandLine=/home/mda_heatmap_gen/heatmap.sh /home/mda_heatmap_gen/ /home/ "chm_
 cpuType=any
 description=Build Next-Generation Clustered Heat Maps (NG-CHMs). NG-CHMs enable the user to zoom and navigate dynamically and link out to dozens of external data resources and tools. The output .ngchm file could be viewed with Next.Gen.Clustered.Heat.Map.Viewer. For details, please check http\://www.ngchm.net/ .
 fileFormat=Dataset
-job.docker.image=ngchm/ngchm-builder-genepattern:latest
+job.docker.image=ngchm/ngchm-builder-genepattern:1.0
 language=Java
 name=Next.Generation.Clustered.Heat.Map.Builder
 os=any
@@ -286,7 +286,7 @@ p9_prefix_when_specified=
 p9_type=java.lang.String
 p9_value=Hierarchical\=Hierarchical Clustering;Original\=Original Order;Random\=Random
 privacy=private
-quality=development
+quality=preproduction
 taskDoc=doc.html
 taskType=Clustering
 userid=jma7@mdanderson.org
