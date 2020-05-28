@@ -1,4 +1,4 @@
-## Next.Gen.Clustered.Heat.Map.Builder
+## Next.Gen.Cluster.Heat.Map.Builder
 A GenePattern Module to build Next-Generation Clustered Heat Maps (NG-CHMs) in GenePattern Notebook.
 For details about NG-CHM, please check [NG-CHMs website](http://www.ngchm.net/)
 
