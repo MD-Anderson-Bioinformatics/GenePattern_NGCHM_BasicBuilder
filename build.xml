@@ -8,7 +8,7 @@
     <property name="dest.dir" value="build"/>
     <zip destfile="${dest.dir}/${ant.project.name}-1.0.zip" whenempty="fail" defaultexcludes="true">
         <fileset dir="." includes="manifest, doc.html, paramgroups.json"/>
-        <fileset dir="mda_heatmap_gen" includes="*.R, *.jar, *.sh, *.py"/>
+        <!-- <fileset dir="mda_heatmap_gen" includes="*.R, *.jar, *.sh, *.py"/> -->
     </zip>
     <!-- <antcall target="postzip"/> -->
 </target>
