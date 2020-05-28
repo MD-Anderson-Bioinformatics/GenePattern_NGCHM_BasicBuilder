@@ -19,7 +19,7 @@ NG-CHMs include the following interactive capabilities (among many others):
 
  Other NGCHM Builders ([Galaxy Builder](https://github.com/MD-Anderson-Bioinformatics/NG-CHM_Galaxy),[R buidler](https://github.com/MD-Anderson-Bioinformatics/NGCHM-R) or [online builder](http://build.ngchm.net/NGCHM-web-builder/)).
  
- ## Use Next.Generation.Clustered.Heat.Map.Builder with GenePattern Notebook 
+## Use Next.Generation.Clustered.Heat.Map.Builder with GenePattern Notebook 
 ### Basic usage:
 1. After loading ```Next.Generation.Clustered.Heat.Map.Builder``` module into notebook, paste the URL of [SampleMatrix](https://raw.githubusercontent.com/MD-Anderson-Bioinformatics/GenePattern_NGCHM_BasicBuilder/master/test_data/400x400.tsv) into ```Input Filename``` field, or upload matrix of your choice from local. 
 2. Click on ```Run``` button to use default setting for the generation of heatmap.
