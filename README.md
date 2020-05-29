@@ -1,5 +1,6 @@
 ## Next.Gen.Cluster.Heat.Map.Builder
-A GenePattern module to build Next-Generation Clustered Heat Map in GenePattern notebook
+A GenePattern module to build Next-Generation Clustered Heat Map in GenePattern notebook.
+[Detail document.](https://md-anderson-bioinformatics.github.io/GenePattern_NGCHM_BasicBuilder/)
 
 ## Use Next.Gen.Cluster.Heat.Map.Builder with GenePattern Notebook 
 1. Type "jupyter notebook" to start, create a new python notebook by clicking on "New" on the right of screen, then select "Python 3".
